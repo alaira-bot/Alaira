@@ -5,3 +5,4 @@ Flask==2.0.2
 yamale==4.0.2
 ruamel.yaml==0.17.20
 nox==2022.1.7
+requests==2.27.1

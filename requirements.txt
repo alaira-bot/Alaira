@@ -4,3 +4,4 @@ hikari-yuyo==v1.0.5a1.post1
 Flask==2.0.2
 yamale==4.0.2
 ruamel.yaml==0.17.20
+nox==2022.1.7

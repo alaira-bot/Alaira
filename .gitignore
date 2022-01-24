@@ -3,3 +3,4 @@
 *.pyc
 *.pyi
 __pycache__
+.nox/

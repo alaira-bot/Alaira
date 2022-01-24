@@ -1,2 +1,5 @@
 /.idea/
 /config.yaml
+*.pyc
+*.pyi
+__pycache__

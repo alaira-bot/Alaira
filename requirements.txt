@@ -6,3 +6,12 @@ yamale==4.0.2
 ruamel.yaml==0.17.20
 nox==2022.1.7
 requests==2.27.1
+pip~=21.1.2
+colorlog~=6.6.0
+wheel~=0.36.2
+py~=1.11.0
+setuptools~=57.0.0
+aiohttp~=3.8.1
+yamldataclassconfig==1.5.0
+flask-sock==0.4.0
+websockets==10.1

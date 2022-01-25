@@ -1,2 +1,4 @@
-web_config:
+database:
   port: int()
+bot:
+  token: str()

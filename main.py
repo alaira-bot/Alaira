@@ -1,7 +1,7 @@
 import logging
 import multiprocessing
 import time
-
+from rich.traceback import install as rich_install
 import utils.config as cfg
 import utils.logger
 import requests
@@ -12,6 +12,8 @@ logging.setLoggerClass(utils.logger.LoggingHandler)
 import bot.main as bot  # noqa E402
 import database.main as database  # noqa E402
 # import dashboard.main as dashboard
+
+rich_install(show_locals=True)
 
 logger = logging.getLogger("main")
 cfg.validate("config.yaml", "schema/config_schema.yaml")

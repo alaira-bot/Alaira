@@ -1,50 +1,48 @@
 import logging
 
-from colorama import init, Fore, Style
+from rich import print as rprint
 
-init()
 
 colors = {
-    "TRACE": f"{Fore.WHITE}{Style.DIM}",
-    "TRACE_HIKARI": f"{Fore.WHITE}{Style.DIM}",
-    "DEBUG": f"{Fore.LIGHTWHITE_EX}",
-    "INFO": "",
-    "WARNING": f"{Fore.YELLOW}{Style.BRIGHT}",
-    "ERROR": f"{Fore.LIGHTRED_EX}{Style.BRIGHT}",
-    "CRITICAL": f"{Fore.RED}{Style.BRIGHT}",
-}
-colors2 = {
-    "TRACE": f"{Fore.WHITE}{Style.DIM}",
-    "TRACE_HIKARI": f"{Fore.WHITE}{Style.DIM}",
-    "DEBUG": Fore.LIGHTWHITE_EX,
-    "INFO": Fore.BLUE,
-    "WARNING": Fore.YELLOW,
-    "ERROR": Fore.LIGHTRED_EX,
-    "CRITICAL": Fore.RED,
-}
-styles = {
-    "TRACE": f"{Fore.WHITE}{Style.DIM}",
-    "TRACE_HIKARI": f"{Fore.WHITE}{Style.DIM}",
-    "DEBUG": f"{Fore.LIGHTWHITE_EX}",
-    "INFO": "",
-    "WARNING": "",
-    "ERROR": "",
-    "CRITICAL": Style.BRIGHT,
+    "TRACE": f"dim white",
+    "TRACE_HIKARI": f"dim white",
+    "DEBUG": "white",
+    "INFO": "bright_white",
+    "WARNING": "gold1",
+    "ERROR": "orange_red1",
+    "CRITICAL": "bold bright_red",
 }
 color_patterns = {
-    "socket": Fore.GREEN,
-    "main": Fore.BLUE,
-    "database": Fore.LIGHTBLUE_EX,
-    "hikari.bot": Fore.MAGENTA,
-    "hikari.gateway": Fore.MAGENTA,
-    "discord.http": Fore.RED,
-    "": Fore.YELLOW,
+    "socket": "green",
+    "main": "blue",
+    "database": "cornflower_blue",
+    "hikari.bot": "magenta",
+    "hikari.gateway": "magenta",
+    "discord.http": "red",
+    "": "yellow",
 }
 
-color_patterns_cache = {"": Fore.YELLOW}
+color_patterns_cache = {"": "yellow"}
 
 ignored = {"yougan-websocket": ["Unknown op %s recieved from Node::%s"]}
 
+
+def lprint(line_type: str, source: str, message: str, *,
+           line_type_style: str = "bright_white",
+           source_style: str = "bright_white",
+           message_style: str = None):
+    leading = (
+        f"[{line_type_style}]{line_type:>8}[/{line_type_style}]"
+        f" "
+        f"[{source_style}]{source[:15]:>15}[/{source_style}] "
+        f"[bright_white]»[/bright_white] ")
+    lines = message.splitlines()
+    rprint(f"{leading}[{message_style or line_type_style}]{lines[0]}[/{message_style or line_type_style}]")
+    if len(lines) > 1:
+        # 31 spaces
+        rprint("\n".join(f"                           [{message_style or line_type_style}]{line}"
+                         f"[/{message_style or line_type_style}]"
+                         for line in lines[1:]))
 
 class LoggingHandler(logging.Logger):
     def handle(self, record: logging.LogRecord) -> None:
@@ -54,14 +52,9 @@ class LoggingHandler(logging.Logger):
         level = record.levelno  # noqa F841
         level_name = record.levelname
         message = record.msg % record.args
-
-        print(
-            f"{colors2[level_name]}{styles[level_name]}{level_name:>8}{Style.RESET_ALL}"
-            f" "
-            f"{Style.BRIGHT}{self._get_color(name)}{name}{Style.RESET_ALL} "
-            + f"» "
-            f"{colors[level_name]}{message}{Style.RESET_ALL}"
-        )
+        lprint(level_name, name, message,
+               line_type_style=colors[level_name],
+               source_style=self._get_color(name))
 
     # noinspection PyMethodMayBeStatic
     def _get_color(self, name: str) -> str:

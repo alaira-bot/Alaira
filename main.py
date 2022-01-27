@@ -9,12 +9,12 @@ from shared.config import AlairaConfigLoader
 import signal
 
 logging.setLoggerClass(utils.logger.LoggingHandler)
+from utils import startup_splash  # noqa E402
 import bot.main as bot  # noqa E402
 import database.main as database  # noqa E402
 # import dashboard.main as dashboard
 
 rich_install(show_locals=True)
-
 logger = logging.getLogger("main")
 cfg.validate("config.yaml", "schema/config_schema.yaml")
 logging.basicConfig(level=logging.INFO)

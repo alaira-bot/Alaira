@@ -8,7 +8,7 @@ from bot.injected.database_communicator import DatabaseCommunicator
 from shared.config import AlairaConfigLoader, AlairaConfig
 
 config = AlairaConfigLoader.load("config.yaml")
-client = hikari.GatewayBot(token=config.bot.token)
+client = hikari.GatewayBot(token=config.bot.token, banner=None)
 database_communicator = DatabaseCommunicator(config)
 
 

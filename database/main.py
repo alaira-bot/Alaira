@@ -26,6 +26,7 @@ route_callbacks: dict[str, typing.Callable[[str, Engine, sessionmaker, dict], ty
 db_engine.connect()
 setup(db_engine)
 
+logger = logging.getLogger("database")
 
 @sock.route("/socket")
 def main_socket(ws: simple_websocket.ws.Server):
@@ -52,9 +53,9 @@ def main_socket(ws: simple_websocket.ws.Server):
 
 @app.route("/kill")
 def kill_route():
-    print("Killing database")
+    logger.info("Killing database")
     time.sleep(5)  # TODO
-    print("Database killed")
+    logger.info("Database killed")
     return "", 204
 
 
@@ -65,5 +66,8 @@ def load_route(path: str):
 
 def run():  # started from the main file - not invoked manually
     for path in Path("database/routes").glob("**/*.py"):
-        load_route(str(path).replace("/", ".")[:-3])
-    app.run(port=config.database.port, host="127.0.0.1")
+        route_name = str(path).replace("/", ".")[:-3]
+        logger.info(f"Loading {route_name}")
+        load_route(route_name)
+    logger.info("Starting flask app")
+    app.run(port=config.database.port)

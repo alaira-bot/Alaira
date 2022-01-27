@@ -33,7 +33,8 @@ styles = {
 }
 color_patterns = {
     "socket": Fore.GREEN,
-    "ptero": Fore.BLUE,
+    "main": Fore.BLUE,
+    "database": Fore.LIGHTBLUE_EX,
     "hikari.bot": Fore.MAGENTA,
     "hikari.gateway": Fore.MAGENTA,
     "discord.http": Fore.RED,

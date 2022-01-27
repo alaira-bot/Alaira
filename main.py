@@ -1,12 +1,16 @@
-import multiprocessing
-import bot.main as bot
-# import dashboard.main as dashboard
-import database.main as database
-import utils.config as cfg
-import requests
 import logging
-
+import multiprocessing
+import utils.config as cfg
+import utils.logger
+import requests
 from shared.config import AlairaConfigLoader
+
+
+logging.setLoggerClass(utils.logger.LoggingHandler)
+import bot.main as bot  # noqa E402
+import database.main as database  # noqa E402
+# import dashboard.main as dashboard
+
 
 cfg.validate("config.yaml", "schema/config_schema.yaml")
 logging.basicConfig(level=logging.INFO)

@@ -29,6 +29,7 @@ setup(db_engine)
 
 @sock.route("/socket")
 def main_socket(ws: simple_websocket.ws.Server):
+    logging.getLogger("socket").info("Database websocket connected")
     while True:
         data = json.loads(ws.receive())
         data_id = data.pop("id")
@@ -65,4 +66,4 @@ def load_route(path: str):
 def run():  # started from the main file - not invoked manually
     for path in Path("database/routes").glob("**/*.py"):
         load_route(str(path).replace("/", ".")[:-3])
-    app.run(port=config.database.port)
+    app.run(port=config.database.port, host="127.0.0.1")

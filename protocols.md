@@ -34,16 +34,19 @@ Note: responses **must** return a status. Alaira will issue a warning otherwise.
 ## Callbacks
 Callbacks are defined in `database/routes`. The file is imported and the 
 file's `setup` function is called, with the only argument being the route 
-callback table. Each callback takes two arguments - the opcode, and the 
-payload stripped of `id` and `op` keys.
+callback table. Each callback takes four arguments - the opcode, the 
+sqlalchemy Engine, the sqlalchemy sessionmaker, and the payload stripped
+of `id` and `op` keys.
 ### Example callback file
 ```python
-def update_member(op: str, **data):
+from sqlalchemy.engine import Engine
+
+def update_member(op: str, engine: Engine, session_maker, **data):
     member_id = data.pop("member")
     # logic here
     return {"status": 200}
 
 
 def setup(routes):
-    routes["update_member"] = update_member()  # add your handlers here
+    routes["update_member"] = update_member  # add your handlers here
 ```

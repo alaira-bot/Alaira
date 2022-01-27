@@ -4,3 +4,4 @@
 *.pyi
 __pycache__
 .nox/
+*.db

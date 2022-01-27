@@ -16,6 +16,22 @@ class DatabaseCommunicator:
         self._id_lock = asyncio.Lock()
         self._events: dict[int, asyncio.Event] = {}
         self._waiting: dict[int, dict] = {}
+        self._prefix_cache: dict[int, str] = {}
+
+    async def get_prefix_for(self, guild: int) -> str:
+        try:
+            return self._prefix_cache[guild]
+        except KeyError:
+            resp = await self.send("get prefix", guild=guild)
+            if resp["status"] == 404:
+                self._prefix_cache[guild] = "!"
+                return "!"
+            self._prefix_cache[guild] = (prefix := resp["prefix"])
+            return prefix
+
+    async def set_prefix_for(self, guild: int, prefix: str):
+        await self.send("set prefix", guild=guild, prefix=prefix)
+        self._prefix_cache[guild] = prefix
 
     @property
     def queue_size(self) -> int:

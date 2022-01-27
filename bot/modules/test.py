@@ -9,6 +9,12 @@ from shared.config import AlairaConfig
 
 component = tanjun.Component(name="test")
 
+@component.with_command
+@tanjun.as_message_command("ping")
+async def ping(ctx: tanjun.context.MessageContext,
+                        config: AlairaConfig = tanjun.injected(type=AlairaConfig),
+                        database_communicator: DatabaseCommunicator = tanjun.injected(type=DatabaseCommunicator)):
+    await ctx.respond("pong!")
 
 @component.with_command
 @tanjun.as_message_command("dbping")

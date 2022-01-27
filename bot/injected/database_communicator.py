@@ -17,16 +17,21 @@ class DatabaseCommunicator:
         self._events: dict[int, asyncio.Event] = {}
         self._waiting: dict[int, dict] = {}
 
+    @property
+    def queue_size(self) -> int:
+        return len(self._events)
+
     async def connect(self):
         self._socket = \
             await websockets.connect(f"ws://127.0.0.1:{self._config.database.port}/socket")
         asyncio.create_task(self.loop())
 
     async def loop(self):
-        message = json.loads(await self._socket.recv())
-        message_id = message.pop("id")
-        self._waiting[message_id] = message
-        await self._events[message_id].set()
+        while True:
+            message = json.loads(await self._socket.recv())
+            message_id = message.pop("id")
+            self._waiting[message_id] = message
+            self._events[message_id].set()
 
     async def send(self, op: str, **params) -> dict:
         async with self._id_lock:
@@ -39,5 +44,3 @@ class DatabaseCommunicator:
         response = self._waiting.pop(id_waiting_for)
         del self._events[id_waiting_for]
         return response
-
-

@@ -22,9 +22,4 @@ loggers = {
 for k, v in loggers.items():
     logging.getLogger(k).log(v, "test")
 
-logging.getLogger(__name__).info("multiline\ntest")
-utils.logger.lprint("CUSTOM", "source", "Boop", source_style="bright_red bold",
-                    message_style="bright_red italic underline on WHITE",
-                    line_type_style="bold color(118)")
-
 print(1/0)

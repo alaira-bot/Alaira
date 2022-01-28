@@ -32,10 +32,10 @@ def lprint(line_type: str, source: str, message: str, *,
            source_style: str = "bright_white",
            message_style: str = None):
     leading = (
-        f"[{line_type_style}]{line_type:>8}[/{line_type_style}]"
+        f"[{line_type_style}]{line_type[0]}[/{line_type_style}] "
         f" "
         f"[{source_style}]{source[:15]:>15}[/{source_style}] "
-        f"[bright_white]»[/bright_white] ")
+        f"[{line_type_style}]»[/{line_type_style}] ")
     lines = message.splitlines()
     rprint(f"{leading}[{message_style or line_type_style}]{lines[0]}[/{message_style or line_type_style}]")
     if len(lines) > 1:

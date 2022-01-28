@@ -7,6 +7,7 @@ from shared.config import AlairaConfig
 from asyncio import Queue
 import json
 
+
 class DatabaseCommunicator:
     def __init__(self, config: AlairaConfig):
         self._config = config
@@ -38,8 +39,9 @@ class DatabaseCommunicator:
         return len(self._events)
 
     async def connect(self):
-        self._socket = \
-            await websockets.connect(f"ws://127.0.0.1:{self._config.database.port}/socket")
+        self._socket = await websockets.connect(
+            f"ws://127.0.0.1:{self._config.database.port}/socket"
+        )
         asyncio.create_task(self.loop())
 
     async def loop(self):

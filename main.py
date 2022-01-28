@@ -12,6 +12,7 @@ logging.setLoggerClass(utils.logger.LoggingHandler)
 from utils import startup_splash  # noqa E402
 import bot.main as bot  # noqa E402
 import database.main as database  # noqa E402
+
 # import dashboard.main as dashboard
 
 rich_install(show_locals=True)
@@ -52,7 +53,9 @@ try:
     requests.get(f"http://127.0.0.1:{config.database.port}/kill")
     logger.info("Database kill signal sent")
 except (ConnectionRefusedError, requests.exceptions.ConnectionError):
-    logger.critical("Database /kill endpoint refused to connect.. Data may have been lost")
+    logger.critical(
+        "Database /kill endpoint refused to connect.. Data may have been lost"
+    )
 # dashboard_proc.kill()
 database_proc.kill()
 logger.info("Database process killed")

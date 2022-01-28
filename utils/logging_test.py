@@ -17,9 +17,9 @@ loggers = {
     "database": logging.WARNING,
     "hikari.bot": logging.INFO,
     "hikari.gateway": logging.DEBUG,
-    "discord.http": 5
+    "discord.http": 5,
 }
 for k, v in loggers.items():
     logging.getLogger(k).log(v, "test")
 
-print(1/0)
+print(1 / 0)

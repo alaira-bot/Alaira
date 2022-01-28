@@ -1,12 +1,6 @@
 import nox
 
-TARGETS = [
-    "bot/",
-    "database/",
-    "dashboard/",
-    "utils.py/",
-    "main.py"
-]
+TARGETS = ["bot/", "database/", "dashboard/", "utils.py/", "main.py"]
 
 
 @nox.session

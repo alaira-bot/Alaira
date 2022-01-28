@@ -10,15 +10,18 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'cee714b63a7e'
-down_revision = 'c097fdea31a0'
+revision = "cee714b63a7e"
+down_revision = "c097fdea31a0"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    op.create_table("guild_configs", sa.Column("guild", sa.Integer, primary_key=True),
-                    sa.Column("prefix", sa.String, nullable=False, default="!"))
+    op.create_table(
+        "guild_configs",
+        sa.Column("guild", sa.Integer, primary_key=True),
+        sa.Column("prefix", sa.String, nullable=False, default="!"),
+    )
 
 
 def downgrade():

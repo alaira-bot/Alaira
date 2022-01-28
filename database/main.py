@@ -21,12 +21,15 @@ config = AlairaConfigLoader.get_current()
 sock = Sock(app)
 db_engine = create_engine("sqlite+pysqlite:///database.db")
 session_maker = sessionmaker(db_engine)
-route_callbacks: dict[str, typing.Callable[[str, Engine, sessionmaker, dict], typing.Any]] = {}
+route_callbacks: dict[
+    str, typing.Callable[[str, Engine, sessionmaker, dict], typing.Any]
+] = {}
 
 db_engine.connect()
 setup(db_engine)
 
 logger = logging.getLogger("database")
+
 
 @sock.route("/socket")
 def main_socket(ws: simple_websocket.ws.Server):
@@ -38,17 +41,16 @@ def main_socket(ws: simple_websocket.ws.Server):
         try:
             resp = {
                 "id": data_id,
-                **(route_callbacks[data_op](data_op, db_engine, session_maker, **data))
+                **(route_callbacks[data_op](data_op, db_engine, session_maker, **data)),
             }
             if "status" not in resp:
-                logging.warning(f"Opcode {data_op} with data {data} did not return a status.")
+                logging.warning(
+                    f"Opcode {data_op} with data {data} did not return a status."
+                )
             ws.send(json.dumps(resp))
         except KeyError:
             logging.warning(f"Found unrecognized opcode {data_op}. Ignoring.")
-            ws.send(json.dumps({
-                "id": data_id,
-                "status": 500
-            }))
+            ws.send(json.dumps({"id": data_id, "status": 500}))
 
 
 @app.route("/kill")
